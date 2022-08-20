@@ -241,6 +241,20 @@ The services folder for define handle logic with package
 
 - _Filename: `*.service.js`_
 
+#### 4.4 Io Routes (src/infrastructure/io-routes)
+
+##### The `io-routes` folder is where you can organize all of your different io namespace declarations
+
+**Convention:**
+
+- _Filename: `*.io-route.js`_
+
+##### The `io-middlewares` subfolder contains global middleware files for io
+
+**Convention:**
+
+- _Filename: `*.io-middleware.js`_
+
 ## NOTE
 
 1. `src/config.js`: Config file for project
