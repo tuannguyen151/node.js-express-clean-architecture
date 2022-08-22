@@ -1,6 +1,7 @@
 /* eslint-disable node/no-unsupported-features/es-syntax */
 
 import * as fs from 'fs'
+import authIoMiddleware from '../../io-middlewares/v1/auth.io-middleware'
 
 export default function initPrivateIoNamespace(io) {
   fs.readdirSync(new URL('./', import.meta.url)).forEach(async (fileName) => {
@@ -9,7 +10,7 @@ export default function initPrivateIoNamespace(io) {
         new URL(fileName, import.meta.url)
       )
 
-      gateway(io)
+      authIoMiddleware(gateway(io))
     }
   })
 }
