@@ -32,6 +32,12 @@ export default {
           'Account and Password is not allowed to be empty',
         accountNotFound: 'Email, phone or username not found',
         passwordIncorrect: 'Password incorrect'
+      },
+      middleware: {
+        tokenNotFound: 'Token not found',
+        tokenInvalidFormat: 'Invalid token format',
+        tokenExpired: 'Token has expired',
+        tokenInvalid: 'Token invalid'
       }
     }
   }
