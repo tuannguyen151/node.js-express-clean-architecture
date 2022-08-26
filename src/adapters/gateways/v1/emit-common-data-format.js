@@ -1,14 +1,22 @@
-export default async (dataGetterFunc, emitterFunc) => {
+export default async (
+  dataGetterFunc,
+  acknowledgementCallback,
+  ...listEmitterFunc
+) => {
   try {
     const data = await dataGetterFunc()
 
-    emitterFunc({
-      data
+    listEmitterFunc.forEach((emitterFunc) => {
+      emitterFunc({
+        data
+      })
     })
   } catch (e) {
+    if (!acknowledgementCallback) throw e
+
     const errorType = e.type || 'SERVER_ERROR'
 
-    emitterFunc({
+    acknowledgementCallback({
       error: {
         type: errorType,
         description: e.message
