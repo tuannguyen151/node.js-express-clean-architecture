@@ -5,7 +5,7 @@ services:
       context: .
       args:
         - NODE_ENV=development
-    command: ../node_modules/.bin/nodemon --experimental-modules --es-module-specifier-resolution=node -L --inspect=0.0.0.0:9229 ./bin/www
+    command: ../node_modules/.bin/nodemon -L --inspect=0.0.0.0:9229 ./bin/www
     env_file: .env
     ports:
       - '3000:3000'

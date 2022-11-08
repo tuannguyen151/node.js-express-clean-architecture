@@ -1,5 +1,5 @@
-FROM node:16.15.1-alpine
-# node version: 16.15.1
+FROM node:18.12-alpine
+# node version: 18.12.0
 
 # set our node environment, either development or production
 # defaults to production, compose overrides this to development on build and run
@@ -13,7 +13,6 @@ EXPOSE $PORT 9229 9230
 
 # you'll likely want the latest npm, regardless of node version, for speed and fixes
 # but pin this version for the best stability
-# 8.13.0
 RUN npm i npm@latest -g
 
 # install dependencies first, in a different location for easier app bind mounting for local development
@@ -33,4 +32,4 @@ ENV PATH /opt/node_app/node_modules/.bin:$PATH
 # copy in as node user, so permissions match what we need
 WORKDIR /opt/node_app/app
 COPY --chown=node:node . .
-CMD [ "node --experimental-modules --es-module-specifier-resolution=node", "./bin/www" ]
+CMD [ "node", "./bin/www" ]
