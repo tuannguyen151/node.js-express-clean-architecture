@@ -11,42 +11,8 @@ const server = app.listen(PORT, () => {
   console.log(`Webserver is ready and listening on port ${PORT}`)
 })
 
-const sockets = []
-let nextSocketId = 0
-server.on('connection', (socket) => {
-  const socketId = nextSocketId
-
-  sockets[socketId] = socket
-
-  socket.once('close', () => {
-    delete sockets[socketId]
-  })
-
-  nextSocketId += 1
-})
-
-const waitForSocketsToClose = (counter) => {
-  if (counter > 0) {
-    console.log(
-      `Waiting ${counter} more ${
-        counter !== 1 ? 'seconds' : 'second'
-      } for all connections to close...`
-    )
-    return setTimeout(waitForSocketsToClose, 1000, counter - 1)
-  }
-
-  console.log('Forcing all connections to close now')
-  sockets.forEach((socket) => {
-    socket.destroy()
-  })
-
-  return false
-}
-
 // shut down server
 function shutdown() {
-  waitForSocketsToClose(10)
-
   server.close((err) => {
     if (err) {
       console.error(err)

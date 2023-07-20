@@ -4,11 +4,7 @@ import bodyParser from 'body-parser'
 import helmet from 'helmet'
 import compression from 'compression'
 import cors from 'cors'
-import { createServer } from 'http'
-import { Server } from 'socket.io'
-
-import router from './infrastructure/routes/v1'
-import initIoRoutes from './infrastructure/io-routes/v1'
+import createMicroserviceProxy from './create_microservice_proxy'
 
 const corsOptions = {
   origin(origin, callback) {
@@ -24,17 +20,8 @@ const corsOptions = {
 }
 
 const app = express()
-const httpServer = createServer(app)
-const io = new Server(httpServer, {
-  serveClient: false,
-  cors: {
-    origin: process.env.CORS_WHITELIST.split(' '),
-    credentials: true
-  }
-})
 
-initIoRoutes(io)
-
+app.use(morgan('common'))
 app.use(cors(corsOptions))
 app.use(helmet())
 app.use(compression())
@@ -46,10 +33,13 @@ app.use(
     parameterLimit: 50000
   })
 )
+
+createMicroserviceProxy(app)
+
 app.use((req, res, next) => {
   res.setHeader(
     'Access-Control-Allow-Methods',
-    'GET, POST, OPTIONS, PUT, PATCH, DELETE'
+    'GET, POST, OPTIONS, PATCH, DELETE'
   )
 
   res.setHeader(
@@ -59,8 +49,5 @@ app.use((req, res, next) => {
 
   next()
 })
-app.use(morgan('common'))
 
-app.use('/api/v1', router)
-
-export default httpServer
+export default app

@@ -15,6 +15,8 @@ EXPOSE $PORT 9229 9230
 # but pin this version for the best stability
 RUN npm i npm@latest -g
 
+RUN npm install pm2 -g
+
 # install dependencies first, in a different location for easier app bind mounting for local development
 # due to default /opt permissions we have to create the dir with root and change perms
 RUN mkdir /opt/node_app && chown node:node /opt/node_app
@@ -32,4 +34,4 @@ ENV PATH /opt/node_app/node_modules/.bin:$PATH
 # copy in as node user, so permissions match what we need
 WORKDIR /opt/node_app/app
 COPY --chown=node:node . .
-CMD [ "node", "./bin/www" ]
+CMD ["pm2-runtime", "process.yml"]
